@@ -1,11 +1,22 @@
 {% extends 'layout.html' %} {% block body %}
 <div class="jumbotron text-center">
-  <h1>Welcome To ListFlix</h1>
-  <p class="lead">
-    AI movie recommendations for what to watch next, when you don't know what to
-    watch next.
-  </p>
-  <p>Powered by Python and Flask.</p>
-  <a href="/fetch-movies" class="btn btn-success btn-lg">Fetch Movies</a>
+  <h1>Movies for User {{user.id}}</h1>
+<p>A simple example of calling TMDB API and rendering content using Flask</p>
+  <div>
+    <!-- Movies come into this file as a Python dictionary called 'movies'
+         below, we are just looping through using the Jinja template language
+        and rendering the returned information about each movie from TMDB API -->
+    {% block content %} {% for movie in movies %}
+    <h3>{{movie.original_title}}</h3>
+    <p>Rating: {{movie.vote_average}}</p>
+    <p>{{movie.overview}}</p>
+    <img
+      class="movie"
+      src="http://image.tmdb.org/t/p/w500{{movie.backdrop_path}}"
+      width="500" height="auto"
+    ></img>
+    <br>
+    {% endfor %} {% endblock %}
+  </div>
 </div>
 {% endblock %}
