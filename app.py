@@ -28,10 +28,8 @@ def fetch_movies(id):
     user = {'id': id}
 
     # Use TMDB discover page to fetch random movies from API
-    # url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}'
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}'
 
-    # Replace this URL to display different API results on the user home page
-    url = 'https://api.themoviedb.org/3/movie/11/recommendations?api_key=71fd409b351004d729d92c7280888cda&language=en-US&page=1'
 
     # Get data from API
     response = urllib.request.urlopen(url)
