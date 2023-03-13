@@ -22,7 +22,7 @@ def fetch_movies(id):
     movie_data = json.loads(data)
 
     # Can uncomment below line for debugging, and to see what useful info TMDB API returns
-    print(movie_data["results"][0]) 
+    print(movie_data["results"][1]) 
 
     # Pass the home template page a Python dictionary called 'movies'
     return render_template("home.html", movies=movie_data["results"], user=user)
