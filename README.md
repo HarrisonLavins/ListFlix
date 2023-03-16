@@ -4,6 +4,8 @@ AI movie recommendations for what to watch next, when you don't know what to wat
 
 ## Installation
 
+### Flask
+
 Depending on what machine you are on and if you are using Python virtual environments or a package/environment manager like [Anaconda](https://www.anaconda.com/), you will need to install Flask using one of the following methods:
 
 1. Using Python Virtual Environments (recommended by Flask)
@@ -13,6 +15,10 @@ Depending on what machine you are on and if you are using Python virtual environ
 2. Using Anaconda:
 
 `conda install -c anaconda flask`
+
+### MySQL Connector
+
+`pip install mysql-connector-python`
 
 ## Running the App
 
