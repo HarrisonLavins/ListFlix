@@ -1,3 +1,10 @@
+/* 
+Created on Wed Mar 15 18:05:53 2023
+@author: harrisonlavins
+-----------------------
+Define the behavior of the movie carousel component
+*/
+
 document.addEventListener('click', (e) => {
   let handle;
   if (e.target.matches('.handle')) {

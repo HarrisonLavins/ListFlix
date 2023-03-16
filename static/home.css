@@ -1,27 +1,6 @@
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-
 :root {
   --handle-size: 3rem;
   --img-gap: 0.25rem;
-}
-
-body {
-  margin: 0;
-}
-
-h1 {
-  color: red;
-  text-align: center;
-  margin-bottom: 30px;
-}
-h2 {
-  color: #fff;
-  text-align: left;
-  margin: 5px 30px;
 }
 
 .jumbotron-fluid {
@@ -46,22 +25,27 @@ h2 {
   flex-grow: 1;
   margin: 0 var(--img-gap);
   transform: translateX(calc(var(--slider-index) * -100%));
-  transition: transform 250ms ease-in-out;
+  transition: transform 300ms ease-in-out;
 }
 
-.slider > img {
+.slider > div {
   flex: 0 0 calc(100% / var(--items-per-screen));
   max-width: calc(100% / var(--items-per-screen));
   aspect-ratio: 16 / 9;
   padding: var(--img-gap);
-  /* border-radius: 1rem; */
 }
 
 .slider > img:hover {
-  margin: 0 20px;
+  margin: 0 35px;
   transform: scale(1.2);
-  transition: 250ms all;
-  /* transition: transform 250ms ease-in-out ; */
+  transition: all 300ms ease-in-out;
+}
+
+.carousel-heading {
+  /* position: absolute;
+  bottom: 20px;
+  left: 20px; */
+  color: #fff;
 }
 
 .handle {
@@ -109,8 +93,10 @@ h2 {
 
 .header {
   display: flex;
-  justify-content: space-between;
-  padding: 0.5rem calc(var(--img-gap) * 2 + var(--handle-size));
+  justify-content: flex-end;
+  margin: 0px 20px;
+  padding: 0.5rem calc(var(--img-gap) * 40 + var(--handle-size) * 2);
+
   align-items: center;
 }
 
@@ -142,6 +128,12 @@ h2 {
 }
 
 @media (max-width: 500px) {
+  h2 {
+    font-size: 18px;
+  }
+  .header {
+    padding: 0.5rem calc(var(--img-gap) * 60 + var(--handle-size) * 2);
+  }
   .slider {
     --items-per-screen: 2;
   }
