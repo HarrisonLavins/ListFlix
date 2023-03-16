@@ -1,22 +1,40 @@
 {% extends 'layout.html' %} {% block body %}
-<div class="jumbotron text-center">
-  <h1>Movies for User {{user.id}}</h1>
-<p>A simple example of calling TMDB API and rendering content using Flask</p>
+<div class="jumbotron-fluid text-center">
+  <!-- <h1>Recommendations for {{user.id}}</h1> -->
   <div>
     <!-- Movies come into this file as a Python dictionary called 'movies'
          below, we are just looping through using the Jinja template language
         and rendering the returned information about each movie from TMDB API -->
-    {% block content %} {% for movie in movies %}
-    <h3>{{movie.original_title}}</h3>
-    <p>Rating: {{movie.vote_average}}</p>
-    <p>{{movie.overview}}</p>
-    <img
-      class="movie"
-      src="http://image.tmdb.org/t/p/w500{{movie.backdrop_path}}"
-      width="500" height="auto"
-    ></img>
-    <br>
-    {% endfor %} {% endblock %}
+    <h1>LISTFLIX</h1>
+
+    <h2>Because you Watched "Top Gun"</h2>
+
+    <div class="row">
+      <div class="header">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="container">
+        <button class="handle left-handle">
+          <div class="text">&#8249;</div>
+        </button>
+        <div class="slider">
+          <!-- Renders each movie returned from TMDB in the carousel -->
+          {% block content %} {% for movie in movies %}
+          <!-- <a href="#"> -->
+
+            <img
+              class="movie"
+              src="http://image.tmdb.org/t/p/w500{{movie.backdrop_path}}"
+            ></img>
+            <!-- <h2 class="carousel-heading">{{movie.title}}</h2> -->
+          <!-- </a> -->
+            {% endfor %} {% endblock %}
+        </div>
+        <button class="handle right-handle">
+          <div class="text">&#8250;</div>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

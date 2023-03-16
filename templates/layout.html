@@ -3,17 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <title>ListFlix</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+      integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="/static/main.js"></script> -->
+    <script src="/static/movie-carousel.js" defer></script>
     <!--  Load CSS in Flask with html-->
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="/static/main.css" />
+    <link rel="stylesheet" href="/static/home.css" />
   </head>
   <body>
     {% include 'components/_navbar.html' %}
     <div class="container">{% block body %}{% endblock %}</div>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
 </html>
