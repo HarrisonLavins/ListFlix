@@ -28,7 +28,7 @@
   transition: transform 300ms ease-in-out;
 }
 
-.slider > div {
+.slider > img {
   flex: 0 0 calc(100% / var(--items-per-screen));
   max-width: calc(100% / var(--items-per-screen));
   aspect-ratio: 16 / 9;
