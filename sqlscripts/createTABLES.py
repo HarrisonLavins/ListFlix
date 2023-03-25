@@ -11,7 +11,7 @@ cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', 
 mycursor = cnx.cursor()
 
 #Users
-mycursor.execute("CREATE TABLE IF NOT EXISTS listUser (userID INT AUTO_INCREMENT PRIMARY KEY, email varchar(244), username VARCHAR(255), password VARCHAR(255))")
+mycursor.execute("CREATE TABLE IF NOT EXISTS listUser (userID INT AUTO_INCREMENT PRIMARY KEY, email varchar(255) UNIQUE, username VARCHAR(255), password VARCHAR(255))")
 
 #Movies
 mycursor.execute("CREATE TABLE IF NOT EXISTS listMovie (movieID INT AUTO_INCREMENT PRIMARY KEY, tmdbID INT, title VARCHAR(255))")

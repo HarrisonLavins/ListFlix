@@ -17,18 +17,20 @@ def insert_into_listUser(email,username,password):
     cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     mycursor = cnx.cursor()
     
-    results = []
-    sql = ("SELECT * FROM listUser where email = %s")
-    val = (email)
+    # results = []
+    # sql = ("SELECT * FROM listUser where email = %s")
+    # val = (email)
+    # mycursor.execute(sql,val)
+    # for x in mycursor:
+    #     results.append(x)
+        
+    # if results.count(x) > 0:
+    #     print('that email exists already')
+    #     return
+    # else:
+    sql = ("INSERT INTO listUser(email, username, password) VALUES(%s,%s,%s)")
+    val = (email,username,password)
     mycursor.execute(sql,val)
-    for x in mycursor:
-        results.append(x)
-
-    sql = ("INSERT INTO listUser(username, password) VALUES(%s,%s)")
-    val = (username,password)
-    mycursor.execute(sql,val)
-    cnx.commit()
-
     cnx.commit()
 
     cnx.close()
@@ -47,8 +49,6 @@ def insert_into_listMovie(tmdbid, title):
     mycursor.execute(sql,val)
     cnx.commit()
 
-    cnx.commit()
-
     cnx.close()
     
 """
@@ -63,8 +63,6 @@ def insert_into_relUserMovie(userID, movieID):
     sql = ("INSERT INTO relUserMovie(userID, movieID) VALUES(%s,%s)")
     val = (userID, movieID)
     mycursor.execute(sql,val)
-    cnx.commit()
-
     cnx.commit()
 
     cnx.close()
@@ -97,6 +95,8 @@ def select_from_listUser(userparam: str = None,searchtype: str = 'user'):
         
     for x in mycursor:
         results.append(x)
+        
+    cnx.close()
     
     return results
     
@@ -132,6 +132,8 @@ def select_from_listMovie(movieparam: str = None,searchtype: str = 'title'):
         
     for x in mycursor:
         results.append(x)
+        
+    cnx.close()
     
     return results
     
@@ -156,6 +158,8 @@ def select_from_relUserMovie(userID,ishidden):
     
     for x in mycursor:
         results.append(x)
+        
+    cnx.close()
     
     return(results)
     
