@@ -17,6 +17,30 @@ app = Flask(__name__)
 # # initialize MYSQL
 # mysql = MySQL(app)
 
+def getMoviesByUrl(url):
+    # Get data from TMDB API
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    movie_data = json.loads(data)
+    return movie_data["results"]
+
+def getDiscover():
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}'
+
+    # Get data from TMDB API
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    movie_data = json.loads(data)
+    return movie_data["results"]
+
+def getRecommendedMoviesById(movieId):
+    url = f'https://api.themoviedb.org/3/movie/{movieId}/recommendations?api_key={api_key}&language=en-US&page=1'
+
+    # Get data from TMDB API
+    response = urllib.request.urlopen(url)
+    data = response.read()
+    movie_data = json.loads(data)
+    return movie_data["results"]
 
 @app.route('/')
 def index():
@@ -27,20 +51,26 @@ def fetch_movies(id):
     # Create object with user information
     user = {'id': id}
 
-    # Use TMDB discover page to fetch random movies from API
-    url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}'
+    user_movies = []
 
-    # Get data from API
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    movie_data = json.loads(data)
-
-    # Can uncomment below line for debugging, and to see what useful info TMDB API returns
-    print(movie_data["results"][1]) 
+    # Call TMDB API for each watched movie
+    movie_watched_list = [33, 11, 17, 26]
+    for movieId in movie_watched_list:
+        user_movies.append(getRecommendedMoviesById(movieId))
 
 
     # Pass the home template page a Python dictionary called 'movies'
-    return render_template("home.html", movies=movie_data["results"], user=user)
+    return render_template("home.html", movies=user_movies, user=user)
+
+
+
+
+
+
+
+
+
+
 #
 # Register From Class
 # class RegisterForm(Form):

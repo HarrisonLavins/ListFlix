@@ -12,6 +12,10 @@
   overflow: hidden;
 }
 
+.carousel {
+  margin-bottom: 50px;
+}
+
 .container {
   display: flex;
   justify-content: center;
