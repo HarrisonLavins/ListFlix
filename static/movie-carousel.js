@@ -5,6 +5,7 @@ Created on Wed Mar 15 18:05:53 2023
 Define the behavior of the movie carousel component
 */
 
+// Register click handlers for left and right slider buttons
 document.addEventListener('click', (e) => {
   let handle;
   if (e.target.matches('.handle')) {
@@ -15,11 +16,13 @@ document.addEventListener('click', (e) => {
   if (handle != null) onHandleClick(handle);
 });
 
+// Handle responsive resize events for carousel number of items and progress bar
 const throttleProgressBar = throttle(() => {
   document.querySelectorAll('.progress-bar').forEach(calculateProgressBar);
 }, 250);
 window.addEventListener('resize', throttleProgressBar);
 
+// Calculate progress bar and number of items shown in carousel
 document.querySelectorAll('.progress-bar').forEach(calculateProgressBar);
 
 function calculateProgressBar(progressBar) {
@@ -49,6 +52,7 @@ function calculateProgressBar(progressBar) {
   }
 }
 
+// Handle click on left or right slider button
 function onHandleClick(handle) {
   const progressBar = handle.closest('.row').querySelector('.progress-bar');
   const slider = handle.closest('.container').querySelector('.slider');
