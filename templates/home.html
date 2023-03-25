@@ -7,11 +7,11 @@
         and rendering the returned information about each movie from TMDB API -->
     <h1>LISTFLIX</h1>
 
-    <h2>Recommended for User: {{user.id}}</h2>
+    <h2>Recommended for User: {{user[0][1]}}</h2>
     
     
     {% block content %} {% for movie_list in movies %}
-    {# <!-- <h2>Because you watched ""</h2> --> #}
+    <h2>Because you watched {{movie_list.watched_movie_title[0][2]}}</h2>
     <div class="carousel">
     <div class="row">
       <div class="header">
@@ -23,7 +23,7 @@
         </button>
         <div class="slider">
           <!-- Renders each movie returned from TMDB in the carousel -->
-           {% for movie in movie_list %}
+           {% for movie in movie_list.recommended_movies %}
           <!-- <a href="#"> -->
 
             <img
