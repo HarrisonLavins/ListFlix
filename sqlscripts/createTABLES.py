@@ -14,13 +14,13 @@ mycursor = cnx.cursor()
 mycursor.execute("CREATE TABLE IF NOT EXISTS listUser (userID INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255), password VARCHAR(255))")
 
 #Movies
-mycursor.execute("CREATE TABLE IF NOT EXISTS listMovie (movieID INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255))")
+mycursor.execute("CREATE TABLE IF NOT EXISTS listMovie (movieID INT AUTO_INCREMENT PRIMARY KEY, tmdbID INT, title VARCHAR(255))")
 
 #Genres
 mycursor.execute("CREATE TABLE IF NOT EXISTS listGenre (genreID INT AUTO_INCREMENT PRIMARY KEY, genrename VARCHAR(255))")
 
 #relUserMovie
-mycursor.execute("CREATE TABLE IF NOT EXISTS relUserMovie (relUserMovieID INT AUTO_INCREMENT PRIMARY KEY, userID INT, movieID INT)")
+mycursor.execute("CREATE TABLE IF NOT EXISTS relUserMovie (relUserMovieID INT AUTO_INCREMENT PRIMARY KEY, userID INT, movieID INT, isHidden INT)")
 
 #relMovieGenre
 mycursor.execute("CREATE TABLE IF NOT EXISTS relMovieGenre (relMovieGenreID INT AUTO_INCREMENT PRIMARY KEY, movieID INT, genreID INT)")

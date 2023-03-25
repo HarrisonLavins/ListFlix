@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import urllib.request, json
 from config import api_key
+from sqlscripts.mySQLFunctions import *
 # from flask_mysqldb import MySQL
 # from wtforms import Form, StringField, TextAreaField, PasswordField, validators, request
 # from passlib.hash import sha256_crypt
@@ -54,9 +55,13 @@ def fetch_movies(id):
     user_movies = []
 
     # Call TMDB API for each watched movie
-    movie_watched_list = [33, 11, 17, 26]
-    for movieId in movie_watched_list:
-        user_movies.append(getRecommendedMoviesById(movieId))
+    # movie_watched_list = [33, 11, 17, 26]
+    movie_watched_list = []
+    tmdbIDs = select_from_relUserMovie(['3'])
+    for i in tmdbIDs:
+        movie_watched_list.append(tmdbIDs[0])
+    for tmdbID in movie_watched_list:
+        user_movies.append(getRecommendedMoviesById(tmdbID))
 
 
     # Pass the home template page a Python dictionary called 'movies'
