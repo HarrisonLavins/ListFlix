@@ -40,12 +40,12 @@ Insert into listMovie table, passing title
 example:
     insert_into_listMovie(['Star Wars'])
 """
-def insert_into_listMovie(tmdbid, title):
+def insert_into_listMovie(tmdbid, title, director, releaseDate, posterArt):
     cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     mycursor = cnx.cursor()
 
-    sql = ("INSERT INTO listMovie(tmdbid, title) VALUES(%s,%s)")
-    val = (tmdbid, title)
+    sql = ("INSERT INTO listMovie(tmdbid, title, director, releaseDate, posterArt) VALUES(%s,%s,%s,%s,%s)")
+    val = (tmdbid, title, director, releaseDate, posterArt)
     mycursor.execute(sql,val)
     cnx.commit()
 
@@ -56,12 +56,12 @@ Insert into relUserMovie table, passing userID and movieID
 example:
     insert_into_relUserMovie('1','1')
 """
-def insert_into_relUserMovie(userID, movieID):
+def insert_into_relUserMovie(userID, movieID, ishidden):
     cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     mycursor = cnx.cursor()
 
-    sql = ("INSERT INTO relUserMovie(userID, movieID) VALUES(%s,%s)")
-    val = (userID, movieID)
+    sql = ("INSERT INTO relUserMovie(userID, movieID, ishidden) VALUES(%s,%s,%s)")
+    val = (userID, movieID, ishidden)
     mycursor.execute(sql,val)
     cnx.commit()
 
@@ -163,4 +163,25 @@ def select_from_relUserMovie(userID,ishidden):
     
     return(results)
     
+    
+"""
+Check if movie exists in listMovie
+"""
+def check_listMovie(tmdbID):
+    cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
+    mycursor = cnx.cursor()
 
+    rows = select_from_listMovie(tmdbID,'tmdbID')
+
+    if not rows:
+        cnx.close()
+        return 0
+    else:
+        cnx.close()
+        return 1
+    
+    
+
+    
+    
+    
