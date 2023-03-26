@@ -63,10 +63,8 @@ def fetch_movies(id):
         movie_watched_list.append(m_tuple[0])
     for tmdbID in movie_watched_list:
         recommended_movies = getRecommendedMoviesById(tmdbID)
-        #user_movies.append(getRecommendedMoviesById(tmdbID))
         watched_movie_title = select_from_listMovie([tmdbID],'tmdbID')
         user_movies.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
-        #user_movies[tmdbID].append(watched_movie_title[2])
 
     # Pass the home template page a Python dictionary called 'movies'
     return render_template("home.html", movies=user_movies, user=user[0])
@@ -105,36 +103,24 @@ def login():
         username = request.form['username']
         password_candidate = request.form['password']
     
-        # Create cursor
-        #cur = mysql.connection.cursor()
-    
-        # Get user by username
-        #result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
-    
         result = select_from_listUser([username],'user')
-    
-        if result > 0:
-            # Get stored hash
-            #data = cur.fetchone()
-            #password = data['password']
-            password = result[0][2]
-    
-            # Compare Passwords
+        
+        if not result:
+            error = 'Username not found'
+            return render_template('login.html', error=error)
+        else:
+            password = result[0][3]
             if sha256_crypt.verify(password_candidate, password):
                 # Passed
                 session['logged_in'] = True
                 session['username'] = username
     
                 flash('You are now logged in', 'success')
-                return redirect(url_for('dashboard'))
+                redirecturl = f'/home/{result[0][0]}/'
+                return redirect(redirecturl)
             else:
                 error = 'Invalid login'
                 return render_template('login.html', error=error)
-            # Close connection
-            #cur.close()
-        else:
-            error = 'Username not found'
-            return render_template('login.html', error=error)
     
     return render_template('login.html')
 

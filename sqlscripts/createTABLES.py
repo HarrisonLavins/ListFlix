@@ -14,7 +14,7 @@ mycursor = cnx.cursor()
 mycursor.execute("CREATE TABLE IF NOT EXISTS listUser (userID INT AUTO_INCREMENT PRIMARY KEY, email varchar(255) UNIQUE, username VARCHAR(255), password VARCHAR(255))")
 
 #Movies
-mycursor.execute("CREATE TABLE IF NOT EXISTS listMovie (movieID INT AUTO_INCREMENT PRIMARY KEY, tmdbID INT, title VARCHAR(255))")
+mycursor.execute("CREATE TABLE IF NOT EXISTS listMovie (movieID INT AUTO_INCREMENT PRIMARY KEY, tmdbID INT, title VARCHAR(255), director VARCHAR(255), releaseDate DATE, posterArt VARCHAR(255))")
 
 #Genres
 mycursor.execute("CREATE TABLE IF NOT EXISTS listGenre (genreID INT AUTO_INCREMENT PRIMARY KEY, genrename VARCHAR(255))")
