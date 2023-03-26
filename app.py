@@ -1,11 +1,10 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
-import urllib.request, json
-from config import api_key
 from sqlscripts.mySQLFunctions import *
 # from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
+from util.tmdb_api import *
 
 app = Flask(__name__)
 
@@ -19,30 +18,6 @@ app = Flask(__name__)
 # # initialize MYSQL
 # mysql = MySQL(app)
 
-def getMoviesByUrl(url):
-    # Get data from TMDB API
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    movie_data = json.loads(data)
-    return movie_data["results"]
-
-def getDiscover():
-    url = f'https://api.themoviedb.org/3/discover/movie?api_key={api_key}'
-
-    # Get data from TMDB API
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    movie_data = json.loads(data)
-    return movie_data["results"]
-
-def getRecommendedMoviesById(movieId):
-    url = f'https://api.themoviedb.org/3/movie/{movieId}/recommendations?api_key={api_key}&language=en-US&page=1'
-
-    # Get data from TMDB API
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    movie_data = json.loads(data)
-    return movie_data["results"]
 
 @app.route('/')
 def index():
@@ -56,7 +31,6 @@ def fetch_movies(id):
     user_movies = []
 
     # Call TMDB API for each watched movie
-    # movie_watched_list = [33, 11, 17, 26]
     movie_watched_list = []
     rum = select_from_relUserMovie(id,'0')
     for m_tuple in rum:
@@ -66,10 +40,42 @@ def fetch_movies(id):
         #user_movies.append(getRecommendedMoviesById(tmdbID))
         watched_movie_title = select_from_listMovie([tmdbID],'tmdbID')
         user_movies.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
-        #user_movies[tmdbID].append(watched_movie_title[2])
 
     # Pass the home template page a Python dictionary called 'movies'
     return render_template("home.html", movies=user_movies, user=user[0])
+
+@app.route('/library/<string:id>/')
+def render_library(id):
+
+    # Create object with user information
+    user = select_from_listUser([id],'id')
+
+    # Call TMDB API for each watched movie - NOT HIDDEN
+    movie_watched_list = []
+    rum = select_from_relUserMovie(id,'0')
+    for m_tuple in rum:
+        tmdb_id = m_tuple[0]
+        movie_data = getMovieDetailsById(tmdb_id)
+
+        # Construct movie object - ToDo: move logic to helper function
+        movie_obj = {'movie_title': movie_data["original_title"], 'overview': movie_data["overview"], 'poster_path': movie_data["poster_path"]}
+
+        movie_watched_list.append(movie_obj)
+
+    # Call TMDB API for each watched movie - NOT HIDDEN
+    movie_hidden_list = []
+    hidden_movies = select_from_relUserMovie(id,'1')
+    for m_tuple in hidden_movies:
+        tmdb_id = m_tuple[0]
+        movie_data = getMovieDetailsById(tmdb_id)
+
+        # Construct movie object - ToDo: move logic to helper function
+        hidden_movie_obj = {'movie_title': movie_data["original_title"], 'overview': movie_data["overview"], 'poster_path': movie_data["poster_path"]}
+
+        movie_hidden_list.append(hidden_movie_obj)
+
+    # Pass the home template page a Python dictionary called 'movies'
+    return render_template("library.html", movies=movie_watched_list, hidden_movies=movie_hidden_list, user=user[0])
 
 # Register From Class
 class RegisterForm(Form):
