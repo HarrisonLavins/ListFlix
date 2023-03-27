@@ -1,3 +1,5 @@
+<!-- TODO: Somehow set the library path to the currently selected user clicked on in the "Users" page -->
+
 {% extends 'layout.html' %} {% block body %}
 <div class="jumbotron-fluid text-center">
   <!-- <h1>Recommendations for {{user.id}}</h1> -->
@@ -5,31 +7,11 @@
     <h1>MY LIBRARY</h1>
 
     <!-- <h2>Recommended for you, {{user[2]}}</h2> -->
-    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="watched-tab" data-bs-toggle="tab" data-bs-target="#watched" type="button" role="tab" aria-controls="watched" aria-selected="true">Watched</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="hidden-tab" data-bs-toggle="tab" data-bs-target="#hidden" type="button" role="tab" aria-controls="hidden" aria-selected="false">Hidden</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="browse-tab" data-bs-toggle="tab" data-bs-target="#browse" type="button" role="tab" aria-controls="browse" aria-selected="false">Browse</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="watched" role="tabpanel" aria-labelledby="watched-tab">Put Watched stuff in here</div>
-        <div class="tab-pane fade" id="hidden" role="tabpanel" aria-labelledby="hidden-tab">Put Hidden stuff in here.</div>
-        <div class="tab-pane fade" id="browse" role="tabpanel" aria-labelledby="browse-tab">Put Search/Browse stuff in here</div>
-      </div> -->
-<!-- 
-      <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#">watched</a></li>
-        <li role="presentation"><a href="#">Profile</a></li>
-        <li role="presentation"><a href="#">Messages</a></li>
-      </ul> -->
+
       <div class="container-fluid">
         <!-- <h2>Dynamic Tabs</h2>
-        <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+        <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a 
+            unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
        -->
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#watched">Watched</a></li>
@@ -37,6 +19,7 @@
           <li><a data-toggle="tab" href="#browse">Browse</a></li>
         </ul>
       
+        <!-- Watched Movies tab -->
         <div class="tab-content">
           <div id="watched" class="tab-pane fade in active">
             {% block content %} {% for movie in movies %} 
@@ -55,10 +38,7 @@
                   </div>
 
 
-                  
-        
-
-        
+        <!-- Hidden Movies tab-->
             {% endfor %} {% endblock %}
           </div>
           <div id="hidden" class="tab-pane fade">

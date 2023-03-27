@@ -46,6 +46,11 @@ def fetch_movies(id):
 @app.route('/library/<string:id>/')
 def render_library(id):
 
+    # TODO: Somehow set the path to the currently selected user clicked on in the "Users" page,
+    # which maybe sets the session["selected_userId"] = userId
+    # and can be accessed here to select the correct user library info
+
+
     # Create object with user information
     user = select_from_listUser([id],'id')
 
@@ -99,6 +104,10 @@ def register():
         
         flash('You are now registered and can log in', 'success')
 
+        # Log the user in once registered
+        session['logged_in'] = True
+        session['username'] = username
+
         return render_template('users.html')
     return render_template('register.html', form=form)
 
@@ -111,6 +120,7 @@ def login():
         password_candidate = request.form['password']
     
         result = select_from_listUser([username],'user')
+        print(result)
         
         if not result:
             error = 'Username not found'
@@ -121,6 +131,7 @@ def login():
                 # Passed
                 session['logged_in'] = True
                 session['username'] = username
+                # session['userId'] = 
     
                 flash('You are now logged in', 'success')
                 redirecturl = f'/home/{result[0][0]}/'

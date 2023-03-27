@@ -1,0 +1,12 @@
+.form-container {
+  margin-top: 8%;
+  padding: 60px 120px;
+  /* background-color: aliceblue; */
+  border-radius: 10px;
+  background-color: #27343f;
+  border: 1px solid lightgray;
+}
+
+label {
+  color: lightgray;
+}
