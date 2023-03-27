@@ -9,21 +9,24 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <!-- <script src="/static/main.js"></script> -->
     <script src="/static/movie-carousel.js" defer></script>
     <!--  Load CSS in Flask with html-->
+
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
     />
+
     <link rel="stylesheet" href="/static/main.css" />
     <link rel="stylesheet" href="/static/home.css" />
+    <link rel="stylesheet" href="/static/login-logout-register.css" />
   </head>
   <body>
-    {% include 'components/_navbar.html' %}
-    <div class="container">
-      {% include 'includes/_messages.html' %}
-      {% block body %}{% endblock %}</div>
+    {% include 'components/_navbar.html' %} {% include 'includes/_messages.html'
+    %}
+    <div class="container">{% block body %}{% endblock %}</div>
   </body>
 </html>

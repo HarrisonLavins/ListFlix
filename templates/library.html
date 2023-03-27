@@ -1,0 +1,74 @@
+<!-- TODO: Somehow set the library path to the currently selected user clicked on in the "Users" page -->
+
+{% extends 'layout.html' %} {% block body %}
+<div class="jumbotron-fluid text-center">
+  <!-- <h1>Recommendations for {{user.id}}</h1> -->
+  <div>
+    <h1>MY LIBRARY</h1>
+
+    <!-- <h2>Recommended for you, {{user[2]}}</h2> -->
+
+      <div class="container-fluid">
+        <!-- <h2>Dynamic Tabs</h2>
+        <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a 
+            unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+       -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#watched">Watched</a></li>
+          <li><a data-toggle="tab" href="#hidden">Hidden</a></li>
+          <li><a data-toggle="tab" href="#browse">Browse</a></li>
+        </ul>
+      
+        <!-- Watched Movies tab -->
+        <div class="tab-content">
+          <div id="watched" class="tab-pane fade in active">
+            {% block content %} {% for movie in movies %} 
+            
+                <div class="row">
+                    <div class="col-xs-6 col-md-3">
+                      <a href="#" class="thumbnail">
+                        <img
+                        class="movie"
+                        src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}"
+                      ></img>
+                      </a>
+                    </div>
+                   <h2>{{movie.movie_title}}</h2>
+                   <h3>{{movie.overview}}</h3>
+                  </div>
+
+
+        <!-- Hidden Movies tab-->
+            {% endfor %} {% endblock %}
+          </div>
+          <div id="hidden" class="tab-pane fade">
+            {% block hidden %} {% for hidden_movie in hidden_movies %} 
+            
+            <div class="row">
+                <div class="col-xs-6 col-md-3">
+                  <a href="#" class="thumbnail">
+                    <img
+                    class="movie"
+                    src="http://image.tmdb.org/t/p/w500{{hidden_movie.poster_path}}"
+                  ></img>
+                  </a>
+                </div>
+               <h2>{{hidden_movie.movie_title}}</h2>
+               <h3>{{hidden_movie.overview}}</h3>
+            </div>
+    
+        {% endfor %} {% endblock %}
+          </div>
+          <div id="browse" class="tab-pane fade">
+            <h3>Browsing Movies Coming Soon to Theatres Near You</h3>
+            <!-- <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p> -->
+          </div>
+     
+        </div>
+      </div>
+      
+
+
+  </div>
+</div>
+{% endblock %}

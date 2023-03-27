@@ -7,7 +7,8 @@
         and rendering the returned information about each movie from TMDB API -->
     <h1>LISTFLIX</h1>
 
-    <h2>Recommended for User: {{user[2]}}</h2>
+    <h2 class="text-center">Recommended for you, {{user[2]}}</h2>
+    <br>
     
     
     {% block content %} {% for movie_list in movies %}
@@ -28,7 +29,7 @@
 
             <img
               class="movie"
-              src="http://image.tmdb.org/t/p/w500{{movie.backdrop_path}}"
+              src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}"
             ></img>
             {% endfor %}
             {# <!-- <h2 class="carousel-heading">{{movie.title}}</h2> --> #}
