@@ -1,10 +1,11 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, jsonify
 from sqlscripts.mySQLFunctions import *
 # from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 from util.tmdb_api import *
+import recommendations
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def index():
 @app.route('/home/<string:id>/')
 def fetch_movies(id):
     # Create object with user information
-    user = select_from_listUser([id],'id')
+    user = select_from_listUser([id], 'id')
     
     user_movies = []
 
@@ -37,7 +38,7 @@ def fetch_movies(id):
         movie_watched_list.append(m_tuple[0])
     for tmdbID in movie_watched_list:
         recommended_movies = getRecommendedMoviesById(tmdbID)
-        watched_movie_title = select_from_listMovie([tmdbID],'tmdbID')
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
         user_movies.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
 
     # Pass the home template page a Python dictionary called 'movies'
@@ -52,7 +53,7 @@ def render_library(id):
 
 
     # Create object with user information
-    user = select_from_listUser([id],'id')
+    user = select_from_listUser([id], 'id')
 
     # Call TMDB API for each watched movie - NOT HIDDEN
     movie_watched_list = []
@@ -119,7 +120,7 @@ def login():
         username = request.form['username']
         password_candidate = request.form['password']
     
-        result = select_from_listUser([username],'user')
+        result = select_from_listUser([username], 'user')
         print(result)
         
         if not result:
@@ -162,6 +163,26 @@ def logout():
     return redirect(url_for('login'))
 
 
+# @app.route('/movie', methods=['GET'])
+# def recommend_movies():
+#     res = recommendations.results(request.args.get('title'))
+#     return jsonify(res)
+
+# @app.route('/recommend', methods=['GET', 'POST'])
+# def recommend():
+#     if request.method == 'POST':
+#         # Get the user input from the form
+#         user_input = request.form['movie']
+#         # Use the model to generate recommendations based on the user input
+#         res = recommendations.results(user_input)
+#         # Return the recommendations as a dictionary
+#         #return {'recommendations': recommendations}
+#         return jsonify(res)
+#     else:
+#         # Render the recommend template on a GET request
+#         return render_template('recommend.html')
+
+
 if __name__ == '__main__':
-    app.secret_key='secret123'
+    app.secret_key = 'secret123'
     app.run(debug=True)
