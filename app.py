@@ -5,7 +5,7 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 from util.tmdb_api import *
-import recommendations
+from recommendations import get_ml_movies
 
 app = Flask(__name__)
 
@@ -29,20 +29,38 @@ def fetch_movies(id):
     # Create object with user information
     user = select_from_listUser([id], 'id')
     
-    user_movies = []
-
-    # Call TMDB API for each watched movie
     movie_watched_list = []
     rum = select_from_relUserMovie(id,'0')
+    print(rum)
     for m_tuple in rum:
         movie_watched_list.append(m_tuple[0])
+
+
+    # Call TMDB API for each watched movie
+    tmbd_movie_list = []
     for tmdbID in movie_watched_list:
         recommended_movies = getRecommendedMoviesById(tmdbID)
         watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
-        user_movies.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
+        tmbd_movie_list.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
+
+
+    #Get ML Recommended Movies
+    ml_movie_list = []
+
+    ml_recommended_movies = get_ml_movies('Star Wars')
+    print(ml_recommended_movies)
+    # for tmdbID in movie_watched_list:
+    #     ml_recommended_movies = get_ml_movies('Star Wars')
+
+
+    for movie in ml_recommended_movies:
+        movie_details = getMovieDetailsById(movie['Movie_Id'])
+        movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
+        # print(movie_obj)
+        ml_movie_list.append(movie_obj)
 
     # Pass the home template page a Python dictionary called 'movies'
-    return render_template("home.html", movies=user_movies, user=user[0])
+    return render_template("home.html", movies=tmbd_movie_list, ml_movies=ml_movie_list, user=user[0])
 
 @app.route('/library/<string:id>/')
 def render_library(id):

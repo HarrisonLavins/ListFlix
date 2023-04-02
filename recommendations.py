@@ -64,7 +64,7 @@ def recommend_movies(title, data, combine, transform):
 
 
 # Take a movie’s title as input and returns the top 20 recommendations in the form of a python dictionary
-def results(movie_name):
+def get_ml_movies(movie_name):
     movie_name = movie_name.lower()
 
     find_movie = get_data()
