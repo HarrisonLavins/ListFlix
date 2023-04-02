@@ -39,6 +39,7 @@ def fetch_movies(id):
     # Call TMDB API for each watched movie
     tmbd_movie_list = []
     for tmdbID in movie_watched_list:
+        print(tmdbID, type(tmdbID))
         recommended_movies = getRecommendedMoviesById(tmdbID)
         watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
         tmbd_movie_list.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
@@ -47,17 +48,24 @@ def fetch_movies(id):
     #Get ML Recommended Movies
     ml_movie_list = []
 
-    ml_recommended_movies = get_ml_movies('Star Wars')
-    print(ml_recommended_movies)
-    # for tmdbID in movie_watched_list:
-    #     ml_recommended_movies = get_ml_movies('Star Wars')
+    for tmdbID in movie_watched_list:
+        print(tmdbID, type(tmdbID))
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
 
+        ml_recommendations = []
+        ml_recommended_movies = get_ml_movies(tmdbID)
+        for movie in ml_recommended_movies:
+            print(movie)
+            print('TRYING TO PRINT MOVIE ID')
+            print(movie['Movie_Id'])
+            movie_details = getMovieDetailsById(str(movie["Movie_Id"]))
+            movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
+            ml_recommendations.append(movie_obj)
+            ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
 
-    for movie in ml_recommended_movies:
-        movie_details = getMovieDetailsById(movie['Movie_Id'])
-        movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
-        # print(movie_obj)
-        ml_movie_list.append(movie_obj)
+    print('ml_movie_list --------------------------')
+    print(ml_movie_list)
+
 
     # Pass the home template page a Python dictionary called 'movies'
     return render_template("home.html", movies=tmbd_movie_list, ml_movies=ml_movie_list, user=user[0])

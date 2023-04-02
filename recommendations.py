@@ -7,7 +7,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Get information about a movie from dataset to be used for further preprocessing
 def get_data():
     movie_data = pd.read_csv('dataset/movie_data.csv')
-    movie_data['original_title'] = movie_data['original_title'].str.lower()
+    # movie_data['original_title'] = movie_data['original_title'].str.lower()
+    movie_data['movie_id'] = movie_data['movie_id']
+    # print('---------- Movie Data -----------')
+    # print(movie_data)
     return movie_data
 
 
@@ -40,9 +43,9 @@ def transform_data(data_combine, data_plot):
 # Recommend movies. The function recommend_movies() takes four parameters:
 # title (name of the movie), data (return value of get_data()), combine (return value of combine_data()) and,
 # transform (return value of transform_data()). It returns a Pandas DataFrame with the top 20 movie recommendations
-def recommend_movies(title, data, combine, transform):
-    indices = pd.Series(data.index, index=data['original_title'])
-    index = indices[title]
+def recommend_movies(movie_id, data, combine, transform):
+    indices = pd.Series(data.index, index=data['movie_id'])
+    index = indices[movie_id]
 
     sim_scores = list(enumerate(transform[index]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
@@ -64,16 +67,16 @@ def recommend_movies(title, data, combine, transform):
 
 
 # Take a movie’s title as input and returns the top 20 recommendations in the form of a python dictionary
-def get_ml_movies(movie_name):
-    movie_name = movie_name.lower()
+def get_ml_movies(movie_id):
+    movie_id = str(movie_id)
 
     find_movie = get_data()
     combine_result = combine_data(find_movie)
     transform_result = transform_data(combine_result, find_movie)
 
-    if movie_name not in find_movie['original_title'].unique():
+    if movie_id not in find_movie['movie_id'].unique():
         return 'Movie not in Database'
 
     else:
-        recommendations = recommend_movies(movie_name, find_movie, combine_result, transform_result)
+        recommendations = recommend_movies(movie_id, find_movie, combine_result, transform_result)
         return recommendations.to_dict('records')
