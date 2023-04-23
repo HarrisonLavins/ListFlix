@@ -15,28 +15,24 @@ def get_connection():
         _connection = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     return _connection
 
-# Insert into listUser table, passing username and password.
-# example:
-#     insert_into_listUser('email1@domain.com','user1','pass1')
-def insert_into_listUser(email,username,password):
-    
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
-    get_connection()
-    cnx = _connection
+
+def insert_into_listAccount(email,password):
+    cnx = get_connection()
     mycursor = cnx.cursor()
-    
-    sql = ("INSERT INTO listUser(email, username, password) VALUES(%s,%s,%s)")
-    val = (email,username,password)
+    sql = ("INSERT INTO listAccount(email, password) VALUES(%s,%s)")
+    val = (email,password)
     mycursor.execute(sql,val)
     cnx.commit()
 
-    # cnx.close()
-    
-# Insert into listMovie table, passing title
-# example:
-#     insert_into_listMovie(['Star Wars'])
+def insert_into_listUser(username,account):
+    cnx = get_connection()
+    mycursor = cnx.cursor()
+    sql = ("INSERT INTO listUser(username, accountID) VALUES(%s,%s)")
+    val = (username,account)
+    mycursor.execute(sql,val)
+    cnx.commit()
+
 def insert_into_listMovie(tmdbid, title, director, releaseDate, posterArt):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     get_connection()
     cnx = _connection
     mycursor = cnx.cursor()
@@ -46,14 +42,7 @@ def insert_into_listMovie(tmdbid, title, director, releaseDate, posterArt):
     mycursor.execute(sql,val)
     cnx.commit()
 
-    # cnx.close()
-    
-
-# Insert into relUserMovie table, passing userID and movieID
-# example:
-#     insert_into_relUserMovie('1','1')
 def insert_into_relUserMovie(userID, movieID, ishidden):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     get_connection()
     cnx = _connection
     mycursor = cnx.cursor()
@@ -63,25 +52,20 @@ def insert_into_relUserMovie(userID, movieID, ishidden):
     mycursor.execute(sql,val)
     cnx.commit()
 
-    # cnx.close()
     
-
-# Select from users table, passing either id or username, and specifying with the searchtype
-# #search by id
-#     select_from_listUser(['3'],'id')
-# #search by username
-#     select_from_listUser(['user2'],'user')
-# #search ALL
-#     select_from_listUser()
+def select_from_listAccount(email):
+    cnx =  get_connection()
+    mycursor = cnx.cursor()
+    sql = ("SELECT AccountID FROM listAccount WHERE email = %s")
+    mycursor.execute(sql,email)
+    result = mycursor.fetchone()
+    return result[0]
+    
 def select_from_listUser(userparam: str = None,searchtype: str = 'user'):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
-    get_connection()
-    cnx = _connection
+    cnx =  get_connection()
     mycursor = cnx.cursor()
     results = []
-    
     sql = ("SELECT * FROM listUser WHERE 1=1 ")
-    
     if not userparam:
         sql = sql + "LIMIT 1000"
         mycursor.execute(sql)
@@ -91,24 +75,11 @@ def select_from_listUser(userparam: str = None,searchtype: str = 'user'):
     else:
         sql = sql + "AND userID = %s"
         mycursor.execute(sql,userparam)
-        
     for x in mycursor:
         results.append(x)
-        
-    # cnx.close()
-    
     return results
     
-
-# Select from listMovie table, passing either id or title, and specifying with the searchtype
-# #search by id
-#     select_from_listMovie(['1'],'id')
-# #search by username
-#     select_from_listMovie(['Star Wars'],'title')
-# #search ALL
-#     select_from_listMovie()
 def select_from_listMovie(movieparam: str = None,searchtype: str = 'title'):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     get_connection()
     cnx = _connection
     mycursor = cnx.cursor()
@@ -131,18 +102,11 @@ def select_from_listMovie(movieparam: str = None,searchtype: str = 'title'):
         
     for x in mycursor:
         results.append(x)
-        
-    # cnx.close()
     
     return results
     
 
-# Select from relUserMovie table, passing userID
-# in the future: specify if searching by ishidden or not
-# #search by id
-#     select_from_relUserMovie(['1','0'])
 def select_from_relUserMovie(userID,ishidden):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
     get_connection()
     cnx = _connection
     mycursor = cnx.cursor()
@@ -158,25 +122,16 @@ def select_from_relUserMovie(userID,ishidden):
     for x in mycursor:
         results.append(x)
         
-    # _connection.close()
-    
     return(results)
     
     
-# Check if movie exists in listMovie
 def check_listMovie(tmdbID):
-    # cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
-    # get_connection()
-    # cnx = _connection
-    # mycursor = cnx.cursor()
 
     rows = select_from_listMovie(tmdbID,'tmdbID')
 
     if not rows:
-        # cnx.close()
         return 0
     else:
-        # cnx.close()
         return 1
     
     
