@@ -46,12 +46,23 @@ def insert_into_relUserMovie(userID, movieID, ishidden):
     get_connection()
     cnx = _connection
     mycursor = cnx.cursor()
-
     sql = ("INSERT INTO relUserMovie(userID, movieID, ishidden) VALUES(%s,%s,%s)")
     val = (userID, movieID, ishidden)
     mycursor.execute(sql,val)
     cnx.commit()
-
+    
+def update_relUserMovie(userID, tmdbID, ishidden, delete):
+    get_connection()
+    cnx = _connection()
+    mycursor = cnx.cursor()
+    if delete == 1:
+        sql = ("DELETE rum FROM relUserMovie rum join listmovie lm on rum.movieID = lm.movieID WHERE rum.userID = %s AND lm.tmdbID = %s")
+        val = (userID, tmdbID)
+    else:
+        sql = ("UPDATE relUserMovie rum join listmovie lm on rum.movieid = lm.movieid SET ishidden = %s WHERE rum.userID = %s AND lm.tmdbid = %s")
+        val = (ishidden, userID, tmdbID)
+    mycursor.execute(sql, val)
+    cnx.commit()
     
 def select_from_listAccount(email):
     cnx =  get_connection()
