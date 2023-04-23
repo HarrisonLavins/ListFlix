@@ -67,7 +67,7 @@ def fetch_movies(id):
         ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
 
     print('ml_movie_list --------------------------')
-    print(ml_movie_list[0])
+    # print(ml_movie_list[0])
 
 
     # Pass the home template page a Python dictionary called 'movies'
@@ -112,8 +112,30 @@ def render_library(id):
     return render_template("library.html", movies=movie_watched_list, hidden_movies=movie_hidden_list, user=user[0])
 
 # Register From Class
+class NewUserForm(Form):
+    username = StringField('Username', [validators.Length(min=2, max=25)])
+@app.route('/adduser', methods=['GET', 'POST'])
+def addUser():
+    form = NewUserForm(request.form)
+    if request.method == 'POST' and form.validate():
+        username = form.username.data
+        
+        profilepic = "https://api.dicebear.com/6.x/adventurer/svg?seed=Sasha"
+        
+        try: 
+            accountID = session['accountID']
+            insert_into_listUser(username, profilepic, accountID)
+        
+            flash('Welcome,' + username + ', you may now start adding movies!', 'success')
+
+            redirecturl = f'/'
+            return redirect(redirecturl)
+        except:
+            flash('Something went wrong', 'danger')
+    return render_template('adduser.html', form=form)
+    
+# Register From Class
 class RegisterForm(Form):
-    #name = StringField('Name', [validators.Length(min=1, max=50)])
     username = StringField('Username', [validators.Length(min=2, max=25)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
     password = PasswordField('Password', [
@@ -131,34 +153,22 @@ def register():
         password = sha256_crypt.encrypt(str(form.password.data))
         
         profilepic = "https://api.dicebear.com/6.x/adventurer/svg?seed=Sasha"
-
-        insert_into_listAccount(email, password)
-        result = select_from_listAccount([email])
-        accountID = result[0]
-        insert_into_listUser(username, profilepic, accountID)
-    
-        flash('You are now registered and can log in', 'success')
-
-        # Log the user in once registered
-        session['logged_in'] = True
-        session['accountID'] = accountID
-
-        return render_template('users.html')
-        # try: 
-        #     insert_into_listAccount(email, password)
-        #     result = select_from_listAccount([email])
-        #     accountID = result[0]
-        #     insert_into_listUser(username, accountID)
         
-        #     flash('You are now registered and can log in', 'success')
+        try: 
+            insert_into_listAccount(email, password)
+            result = select_from_listAccount([email])
+            accountID = result[0]
+            insert_into_listUser(username, profilepic, accountID)
+        
+            flash('You are now registered and can log in', 'success')
 
-        #     # Log the user in once registered
-        #     session['logged_in'] = True
-        #     session['accountID'] = accountID
+            # Log the user in once registered
+            session['logged_in'] = True
+            session['accountID'] = accountID
 
-        #     return render_template('users.html')
-        # except:
-        #     flash('That email already exists', 'danger')
+            return render_template('users.html')
+        except:
+            flash('That email already exists', 'danger')
     return render_template('register.html', form=form)
 
 # User login

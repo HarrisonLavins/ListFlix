@@ -6,7 +6,7 @@
         and rendering the returned information about each movie from TMDB API -->
   <h1>LISTFLIX</h1>
 
-  <h2 class="text-center">Recommended for you, {{user[2]}}</h2>
+  <h2 class="text-center">Recommended for you, {{user[1]}}</h2>
   <br />
 
   <div class="container-fluid">
@@ -24,6 +24,9 @@
     <div class="tab-content">
       <!-- TMDB Movies tab -->
       <div id="TMDB" class="tab-pane fade in active">
+      {% if movies|length < 1%}
+          <h1>Nothing here! Head to <a href="/library/{{user[0]}}">Library</a> to add movies</h1>
+      {% endif %}
         {% block tmdb_carousel %} {% for movie_list in movies %}
             <h2 class="carousel-heading">Because you watched {{movie_list.watched_movie_title}}</h2>
             <div class="carousel">

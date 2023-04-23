@@ -1,0 +1,22 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="container">
+  <div class="form-container">
+    <div class="row">
+      <h1>Add User</h1>
+      {% from "components/_formhelpers.html" import render_field %}
+      <form method="POST" action="">
+        <div class="form-group">
+          {{render_field(form.username, class_="form-control")}}
+        </div>
+        <p>
+          <input
+            type="submit"
+            class="btn btn-primary btn-block"
+            value="Submit"
+          />
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
