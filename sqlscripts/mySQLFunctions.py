@@ -24,11 +24,11 @@ def insert_into_listAccount(email,password):
     mycursor.execute(sql,val)
     cnx.commit()
 
-def insert_into_listUser(username,account):
+def insert_into_listUser(username,profilepic,account):
     cnx = get_connection()
     mycursor = cnx.cursor()
-    sql = ("INSERT INTO listUser(username, accountID) VALUES(%s,%s)")
-    val = (username,account)
+    sql = ("INSERT INTO listUser(username, profilepic, accountID) VALUES(%s,%s,%s)")
+    val = (username,profilepic,account)
     mycursor.execute(sql,val)
     cnx.commit()
 
@@ -56,12 +56,12 @@ def insert_into_relUserMovie(userID, movieID, ishidden):
 def select_from_listAccount(email):
     cnx =  get_connection()
     mycursor = cnx.cursor()
-    sql = ("SELECT AccountID FROM listAccount WHERE email = %s")
+    sql = ("SELECT AccountID, password FROM listAccount WHERE email = %s")
     mycursor.execute(sql,email)
     result = mycursor.fetchone()
-    return result[0]
+    return result
     
-def select_from_listUser(userparam: str = None,searchtype: str = 'user'):
+def select_from_listUser(userparam: str = None,searchtype: str = 'account'):
     cnx =  get_connection()
     mycursor = cnx.cursor()
     results = []
@@ -69,8 +69,8 @@ def select_from_listUser(userparam: str = None,searchtype: str = 'user'):
     if not userparam:
         sql = sql + "LIMIT 1000"
         mycursor.execute(sql)
-    elif 'user' in searchtype:
-        sql = sql + "AND username = %s LIMIT 1000"
+    elif 'account' in searchtype:
+        sql = sql + "AND accountID = %s LIMIT 1000"
         mycursor.execute(sql,userparam)
     else:
         sql = sql + "AND userID = %s"
