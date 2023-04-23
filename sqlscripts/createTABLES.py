@@ -6,8 +6,11 @@ Created on Mon Feb 27 16:47:44 2023
 """
 
 import mysql.connector
+from mySQLFunctions import *
 
-cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
+# cnx = mysql.connector.connect(user='admin',password='ET_5600',host='localhost', database='LISTFLIX')
+get_connection()
+cnx = _connection
 mycursor = cnx.cursor()
 
 #Users
@@ -29,4 +32,4 @@ mycursor.execute("CREATE TABLE IF NOT EXISTS relMovieGenre (relMovieGenreID INT 
 
 cnx.commit()
 
-cnx.close()
+# cnx.close()
