@@ -36,11 +36,11 @@
                    <h2>{{movie.movie_title}}</h2>
                    <h3>{{movie.overview}}</h3>
                   </div>
+                  {% endfor %} {% endblock %}
+                </div>
 
 
         <!-- Hidden Movies tab-->
-            {% endfor %} {% endblock %}
-          </div>
           <div id="hidden" class="tab-pane fade">
             {% block hidden %} {% for hidden_movie in hidden_movies %} 
             

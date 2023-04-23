@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE5yicLczp6TGxh/kIs+" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Movie Search</h1>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/static" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="movie" class="form-control form-control-lg" placeholder="Enter a movie name">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Search</button>
+                </form>
+            </div>
+        </div>
+        {% if results %}
+        <h2 class="mt-5 mb-3">Results:</h2>
+        <div class="row">
+            {% for movie, score in results.items() %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie }}</h5>
+                        <p class="card-text">Score: {{ score }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

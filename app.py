@@ -1,10 +1,11 @@
-from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from flask import Flask, render_template, flash, redirect, url_for, session, request, logging, jsonify
 from sqlscripts.mySQLFunctions import *
 # from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 from util.tmdb_api import *
+from recommendations import get_ml_movies
 
 app = Flask(__name__)
 
@@ -26,22 +27,49 @@ def index():
 @app.route('/home/<string:id>/')
 def fetch_movies(id):
     # Create object with user information
-    user = select_from_listUser([id],'id')
+    user = select_from_listUser([id], 'id')
     
-    user_movies = []
-
-    # Call TMDB API for each watched movie
     movie_watched_list = []
     rum = select_from_relUserMovie(id,'0')
+    print(rum)
     for m_tuple in rum:
         movie_watched_list.append(m_tuple[0])
+
+
+    # Call TMDB API for each watched movie
+    tmbd_movie_list = []
     for tmdbID in movie_watched_list:
+        print(tmdbID, type(tmdbID))
         recommended_movies = getRecommendedMoviesById(tmdbID)
-        watched_movie_title = select_from_listMovie([tmdbID],'tmdbID')
-        user_movies.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')[0][2]
+        tmbd_movie_list.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
+
+
+    #Get ML Recommended Movies
+    ml_movie_list = []
+
+    for tmdbID in movie_watched_list:
+        # print(tmdbID, type(tmdbID))
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')[0][2]
+
+        ml_recommendations = []
+        ml_recommended_movies = get_ml_movies(tmdbID)
+        for movie in ml_recommended_movies:
+            print(movie)
+            print('TRYING TO PRINT MOVIE ID')
+            print(movie['Movie_Id'])
+            movie_details = getMovieDetailsById(str(movie["Movie_Id"]))
+            movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
+            ml_recommendations.append(movie_obj)
+        
+        ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
+
+    print('ml_movie_list --------------------------')
+    print(ml_movie_list[0])
+
 
     # Pass the home template page a Python dictionary called 'movies'
-    return render_template("home.html", movies=user_movies, user=user[0])
+    return render_template("home.html", movies=tmbd_movie_list, ml_movies=ml_movie_list, user=user[0])
 
 @app.route('/library/<string:id>/')
 def render_library(id):
@@ -52,7 +80,7 @@ def render_library(id):
 
 
     # Create object with user information
-    user = select_from_listUser([id],'id')
+    user = select_from_listUser([id], 'id')
 
     # Call TMDB API for each watched movie - NOT HIDDEN
     movie_watched_list = []
@@ -119,7 +147,7 @@ def login():
         username = request.form['username']
         password_candidate = request.form['password']
     
-        result = select_from_listUser([username],'user')
+        result = select_from_listUser([username], 'user')
         print(result)
         
         if not result:
@@ -162,6 +190,26 @@ def logout():
     return redirect(url_for('login'))
 
 
+# @app.route('/movie', methods=['GET'])
+# def recommend_movies():
+#     res = recommendations.results(request.args.get('title'))
+#     return jsonify(res)
+
+# @app.route('/recommend', methods=['GET', 'POST'])
+# def recommend():
+#     if request.method == 'POST':
+#         # Get the user input from the form
+#         user_input = request.form['movie']
+#         # Use the model to generate recommendations based on the user input
+#         res = recommendations.results(user_input)
+#         # Return the recommendations as a dictionary
+#         #return {'recommendations': recommendations}
+#         return jsonify(res)
+#     else:
+#         # Render the recommend template on a GET request
+#         return render_template('recommend.html')
+
+
 if __name__ == '__main__':
-    app.secret_key='secret123'
+    app.secret_key = 'secret123'
     app.run(debug=True)
