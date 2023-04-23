@@ -1,12 +1,41 @@
 {% extends 'layout.html' %} {% block body %}
 <div class="jumbotron-fluid text-center">
-  <h1 class="text-center">Who's Watching?{{users}}</h1>
-  <!-- <p class="lead">
-    Movie recommendations for what to watch next, when you don't know what to
-    watch next.
-  </p>
-  <p>Who's Watching?</p> -->
-
-  <div class="container-lg">{% include 'components/_avatar.html' %}</div>
+  <h1 class="text-center">Who's Watching?</h1>
+    <div class="avatar-container">
+  {%for user in users%}
+      <!--<h1 class="text-center">This guy?{{user[0]}}</h1> -->
+        <!-- TODO: make links and profiles dynamic -->
+        <!--<a href="/home/">-->
+        <a href="/home/{{user[0]}}">
+          <div class="profile-container">
+            <div class="border-outer">
+              <div class="border-inner">
+                <img
+                  class="avatar"
+                  src={{user[2]}}
+                  alt="avatar"
+                />
+              </div>
+            </div>
+            <p>{{user[1]}}</p>
+          </div>
+        </a>
+      
+  {%endfor%}   
+      <a href="/adduser">
+        <div class="profile-container">
+          <div class="border-outer">
+            <div class="border-inner">
+              <img
+                class="avatar"
+                src="../static/assets/plus-circle.png"
+                alt="avatar"
+              />
+            </div>
+          </div>
+          <p>New User</p>
+        </div>
+      </a>
+    </div> 
 </div>
 {% endblock %}
