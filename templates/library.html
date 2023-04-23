@@ -57,16 +57,23 @@
                <h3>{{hidden_movie.overview}}</h3>
             </div>
     
-        {% endfor %} {% endblock %}
+          {% endfor %} {% endblock %}
           </div>
           <div id="browse" class="tab-pane fade">
-            <h3>Browsing Movies Coming Soon to Theatres Near You</h3>
-            <!-- <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p> -->
-          </div>
+            <!-- <h3>Browsing Movies Coming Soon to Theatres Near You</h3> -->
+            <form id="search-form" method="post" class="form-inline">
+              <span id="helpBlock" class="help-block">Search for new movies to add to your watch list library and spark new recommendations.</span>
+              <div class="form-group">
+                <input type="text" class="form-control" id="movieSearchInput" placeholder="Movie title, genre, etc..." aria-describedby="helpBlock">
+              </div>
+              <button type="submit" class="btn btn-default">Search</button>
+            </form>         
+           </div>
+
+           <div id="search-results"></div>
      
-        </div>
-      </div>
-      
+        </div> <!-- Tab Pane -->
+      </div>  <!-- Tab Container -->
 
 
   </div>

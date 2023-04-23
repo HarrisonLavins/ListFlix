@@ -246,6 +246,16 @@ def logout():
 #         # Render the recommend template on a GET request
 #         return render_template('recommend.html')
 
+# Library Search feature
+
+@app.route('/search/<string:query>/')
+def render_library(query):
+
+    results = searchMovies(query)
+    return results
+
+
+
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'
