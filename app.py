@@ -22,12 +22,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('users.html')
+    users = select_from_listUser([session['accountID']])
+    return render_template('users.html', users=users)
 
 @app.route('/home/<string:id>/')
 def fetch_movies(id):
     # Create object with user information
-    user = select_from_listUser([id], 'id')
+    user = select_from_listUser([id],'id')
+    # user = select_from_listUser([session['UserID']],'id')
     
     movie_watched_list = []
     rum = select_from_relUserMovie(id,'0')
@@ -127,16 +129,36 @@ def register():
         email = form.email.data
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-
-        insert_into_listUser(email,username,password)
         
+        profilepic = "https://api.dicebear.com/6.x/adventurer/svg?seed=Sasha"
+
+        insert_into_listAccount(email, password)
+        result = select_from_listAccount([email])
+        accountID = result[0]
+        insert_into_listUser(username, profilepic, accountID)
+    
         flash('You are now registered and can log in', 'success')
 
         # Log the user in once registered
         session['logged_in'] = True
-        session['username'] = username
+        session['accountID'] = accountID
 
         return render_template('users.html')
+        # try: 
+        #     insert_into_listAccount(email, password)
+        #     result = select_from_listAccount([email])
+        #     accountID = result[0]
+        #     insert_into_listUser(username, accountID)
+        
+        #     flash('You are now registered and can log in', 'success')
+
+        #     # Log the user in once registered
+        #     session['logged_in'] = True
+        #     session['accountID'] = accountID
+
+        #     return render_template('users.html')
+        # except:
+        #     flash('That email already exists', 'danger')
     return render_template('register.html', form=form)
 
 # User login
@@ -144,25 +166,27 @@ def register():
 def login():
     if request.method == 'POST':
         # Get Form Fields
-        username = request.form['username']
+        email = request.form['email']
         password_candidate = request.form['password']
     
-        result = select_from_listUser([username], 'user')
-        print(result)
+        result = select_from_listAccount([email])
+        # print(result)
         
         if not result:
-            error = 'Username not found'
+            error = 'Email not found'
             return render_template('login.html', error=error)
         else:
-            password = result[0][3]
+            accountID = result[0]
+            password = result[1]
             if sha256_crypt.verify(password_candidate, password):
                 # Passed
                 session['logged_in'] = True
-                session['username'] = username
+                session['accountID'] = accountID
                 # session['userId'] = 
     
                 flash('You are now logged in', 'success')
-                redirecturl = f'/home/{result[0][0]}/'
+                # redirecturl = f'/home/{result[0][0]}/'
+                redirecturl = f'/'
                 return redirect(redirecturl)
             else:
                 error = 'Invalid login'
