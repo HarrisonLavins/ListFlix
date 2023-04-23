@@ -1,100 +1,102 @@
 {% extends 'layout.html' %} {% block body %}
 <div class="jumbotron-fluid text-center">
   <!-- <h1>Recommendations for {{user.id}}</h1> -->
-    <!-- Movies come into this file as a Python dictionary called 'movies'
+  <!-- Movies come into this file as a Python dictionary called 'movies'
          below, we are just looping through using the Jinja template language
         and rendering the returned information about each movie from TMDB API -->
-    <h1>LISTFLIX</h1>
+  <h1>LISTFLIX</h1>
 
-    <h2 class="text-center">Recommended for you, {{user[2]}}</h2>
-    <br>
-    
+  <h2 class="text-center">Recommended for you, {{user[2]}}</h2>
+  <br />
 
-    <div class="container-fluid">
-      <!-- <h2>Dynamic Tabs</h2>
-      <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a 
-          unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+  <div class="container-fluid">
+    <!-- 
+      To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a 
+          unique ID for every tab and wrap them inside a div element with class .tab-content.
      -->
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#TMDB">TMDB Recommended</a></li>
-        <li><a data-toggle="tab" href="#ML">ML Recommended</a></li>
-      </ul>
-    
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a data-toggle="tab" href="#TMDB">TMDB Recommended</a>
+      </li>
+      <li><a data-toggle="tab" href="#ML">ML Recommended</a></li>
+    </ul>
+
+    <div class="tab-content">
       <!-- TMDB Movies tab -->
-      <div class="tab-content">
-        <div id="TMDB" class="tab-pane fade in active">
-          {% block content %} {% for movie_list in movies %}
-          <h2>Because you watched {{movie_list.watched_movie_title[0][2]}}</h2>
-          <div class="carousel">
-          <div class="row">
-            <div class="header">
-              <div class="progress-bar"></div>
-            </div>
-            <div class="container">
-              <button class="handle left-handle">
-                <div class="text">&#8249;</div>
-              </button>
-              <div class="slider">
-                <!-- Renders each movie returned from TMDB in the carousel -->
-                 {% for movie in movie_list.recommended_movies %}
-                <!-- <a href="#"> -->
-      
-                  <img
-                    class="movie"
-                    src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}"
-                  ></img>
-                  {% endfor %}
-                  {# <!-- <h2 class="carousel-heading">{{movie.title}}</h2> --> #}
-                <!-- </a> -->
-              </div>
-              <button class="handle right-handle">
-                <div class="text">&#8250;</div>
-              </button>
-            </div>
-          </div> 
-        </div><!-- End Carousel -->
-          {% endfor %} {% endblock %}
+      <div id="TMDB" class="tab-pane fade in active">
+        {% block tmdb_carousel %} {% for movie_list in movies %}
+            <h2 class="carousel-heading">Because you watched {{movie_list.watched_movie_title}}</h2>
+            <div class="carousel">
+              <div class="row">
+                <div class="header">
+                  <div class="progress-bar"></div>
+                </div>
+                <div class="container">
+                  <button class="handle left-handle">
+                    <div class="text">&#8249;</div>
+                  </button>
+                  <div class="slider">
+                    <!-- Renders each movie returned from TMDB in the carousel -->
+                    {% for movie in movie_list.recommended_movies %}
+                    <!-- <a href="#"> -->
+          
+                      <img
+                        class="movie"
+                        src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}"
+                      ></img>
+                      {% endfor %}
+                      {# <!-- <h2 class="carousel-heading">{{movie.title}}</h2> --> #}
+                    <!-- </a> -->
+                  </div>
+                  <button class="handle right-handle">
+                    <div class="text">&#8250;</div>
+                  </button>
+                </div>
+              </div> 
+          </div><!-- End Carousel -->
+            {% endfor %} {% endblock %}
+      </div>
+      <!-- Tab Pane-->
+
+      <!-- ML Movies tab-->
+      <div id="ML" class="tab-pane fade">
+        {% block ml_carousel %} {% for ml_movie_obj in ml_movies %}
+        <h2 class="carousel-heading">Because you watched {{ml_movie_obj.watched_movie_title}}</h2>
+        
+        <div class="carousel">
+        <div class="row">
+          <div class="header">
+            <div class="progress-bar"></div>
           </div>
-
-
-       <!-- ML Movies tab-->
-        <div id="ML" class="tab-pane fade">
-          <h2 class="text-center">ML Recommended for You</h2>
-
-          <div class="carousel">
-          <div class="row">
-            <div class="header">
-              <div class="progress-bar"></div>
+          <div class="container">
+            <button class="handle left-handle">
+              <div class="text">&#8249;</div>
+            </button>
+            <div class="slider">
+              <!-- Renders each movie returned from TMDB in the carousel -->
+              {% for recommended_movie in ml_movie_obj.recommended_movies %}
+              <!-- <a href="#"> -->
+        
+                <img
+                  class="movie"
+                  src="http://image.tmdb.org/t/p/w500{{recommended_movie.poster_path}}"
+                ></img>
+                {% endfor %}
+                {# <!-- <h2 class="carousel-heading">{{recommended_movie.title}}</h2> --> #}
+              <!-- </a> -->
             </div>
-            <div class="container">
-              <button class="handle left-handle">
-                <div class="text">&#8249;</div>
-              </button>
-              <div class="slider">
-                <!-- Renders each movie returned from TMDB in the carousel -->
-                 {% for movie in ml_movies %}
-                <!-- <a href="#"> -->
-      
-                  <img
-                    class="movie"
-                    src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}"
-                  ></img>
-                  {% endfor %}
-                  {# <!-- <h2 class="carousel-heading">{{movie.title}}</h2> --> #}
-                <!-- </a> -->
-              </div>
-              <button class="handle right-handle">
-                <div class="text">&#8250;</div>
-              </button>
-            </div>
-          </div> 
+            <button class="handle right-handle">
+              <div class="text">&#8250;</div>
+            </button>
+          </div>
+        </div> 
         </div><!-- End Carousel -->
-        </div>
-       
-      </div>  <!-- Tab Content-->
-
-
-    </div>  <!-- Tab Container-->
-    
+        {% endfor %} {% endblock %}
+      </div>
+      <!-- Tab Pane-->
+    </div>
+    <!-- Tab Content-->
+  </div>
+  <!-- Tab Container-->
 </div>
 {% endblock %}

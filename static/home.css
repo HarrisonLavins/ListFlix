@@ -12,6 +12,10 @@
   overflow: hidden;
 }
 
+.tab-content {
+  padding-top: 10px;
+}
+
 .carousel {
   margin-bottom: 50px;
 }
@@ -20,6 +24,10 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
+}
+
+.row {
+  margin-left: -30px;
 }
 
 .slider {
@@ -45,12 +53,9 @@
   transition: all 300ms ease-in-out;
 }
 
-.carousel-heading {
-  /* position: absolute;
-  bottom: 20px;
-  left: 20px; */
-  color: #fff;
-}
+/* .carousel-heading {
+
+} */
 
 .handle {
   border: none;
@@ -79,6 +84,8 @@
 .right-handle {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+
+  margin-right: 0px;
 }
 
 .handle:hover,
@@ -128,6 +135,12 @@
 @media (max-width: 1000px) {
   .slider {
     --items-per-screen: 3;
+  }
+}
+
+@media (max-width: 767px) {
+  .right-handle {
+    margin-right: -15px;
   }
 }
 

@@ -75,7 +75,7 @@ def get_ml_movies(movie_id):
     transform_result = transform_data(combine_result, find_movie)
 
     if movie_id not in find_movie['movie_id'].unique():
-        return 'Movie not in Database'
+        return []
 
     else:
         recommendations = recommend_movies(movie_id, find_movie, combine_result, transform_result)

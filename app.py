@@ -41,7 +41,7 @@ def fetch_movies(id):
     for tmdbID in movie_watched_list:
         print(tmdbID, type(tmdbID))
         recommended_movies = getRecommendedMoviesById(tmdbID)
-        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')[0][2]
         tmbd_movie_list.append({'watched_movie_title': watched_movie_title,'recommended_movies': recommended_movies})
 
 
@@ -49,8 +49,8 @@ def fetch_movies(id):
     ml_movie_list = []
 
     for tmdbID in movie_watched_list:
-        print(tmdbID, type(tmdbID))
-        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')
+        # print(tmdbID, type(tmdbID))
+        watched_movie_title = select_from_listMovie([tmdbID], 'tmdbID')[0][2]
 
         ml_recommendations = []
         ml_recommended_movies = get_ml_movies(tmdbID)
@@ -61,10 +61,11 @@ def fetch_movies(id):
             movie_details = getMovieDetailsById(str(movie["Movie_Id"]))
             movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
             ml_recommendations.append(movie_obj)
-            ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
+        
+        ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
 
     print('ml_movie_list --------------------------')
-    print(ml_movie_list)
+    print(ml_movie_list[0])
 
 
     # Pass the home template page a Python dictionary called 'movies'
