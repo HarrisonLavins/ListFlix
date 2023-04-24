@@ -119,8 +119,7 @@ def addUser():
     form = NewUserForm(request.form)
     if request.method == 'POST' and form.validate():
         username = form.username.data
-        
-        profilepic = "https://api.dicebear.com/6.x/adventurer/svg?seed=Sasha"
+        profilepic = request.form['profilepic']
         
         try: 
             accountID = session['accountID']
