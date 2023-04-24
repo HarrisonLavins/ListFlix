@@ -20,10 +20,17 @@ app = Flask(__name__)
 # mysql = MySQL(app)
 
 
+
+
 @app.route('/')
 def index():
-    users = select_from_listUser([session['accountID']])
-    return render_template('users.html', users=users)
+    loggedIn = session.get('accountID')
+    if loggedIn:
+        users = select_from_listUser([session['accountID']])
+        return render_template('users.html', users=users)
+    else:
+        return redirect(url_for('login'))
+    
 
 @app.route('/home/<string:id>/')
 def fetch_movies(id):
@@ -125,7 +132,7 @@ def addUser():
             accountID = session['accountID']
             insert_into_listUser(username, profilepic, accountID)
         
-            flash('Welcome,' + username + ', you may now start adding movies!', 'success')
+            flash('Welcome, ' + username + ', you may now start adding movies!', 'success')
 
             redirecturl = f'/'
             return redirect(redirecturl)
@@ -249,7 +256,7 @@ def logout():
 # Library Search feature
 
 @app.route('/search/<string:query>/')
-def render_library(query):
+def search_tmdb(query):
 
     results = searchMovies(query)
     return results
