@@ -24,6 +24,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    session['userID'] = None
+
     loggedIn = session.get('accountID')
     if loggedIn:
         users = select_from_listUser([session['accountID']])
@@ -34,6 +36,8 @@ def index():
 
 @app.route('/home/<string:id>/')
 def fetch_movies(id):
+    session['userID'] = id
+
     # Create object with user information
     user = select_from_listUser([id],'id')
     # user = select_from_listUser([session['UserID']],'id')
@@ -90,6 +94,7 @@ def render_library(id):
 
     # Create object with user information
     user = select_from_listUser([id], 'id')
+    print(user)
 
     # Call TMDB API for each watched movie - NOT HIDDEN
     movie_watched_list = []
@@ -238,40 +243,50 @@ def logout():
     return redirect(url_for('login'))
 
 
-# @app.route('/movie', methods=['GET'])
-# def recommend_movies():
-#     res = recommendations.results(request.args.get('title'))
-#     return jsonify(res)
-
-# @app.route('/recommend', methods=['GET', 'POST'])
-# def recommend():
-#     if request.method == 'POST':
-#         # Get the user input from the form
-#         user_input = request.form['movie']
-#         # Use the model to generate recommendations based on the user input
-#         res = recommendations.results(user_input)
-#         # Return the recommendations as a dictionary
-#         #return {'recommendations': recommendations}
-#         return jsonify(res)
-#     else:
-#         # Render the recommend template on a GET request
-#         return render_template('recommend.html')
 
 @app.route('/add-movie')
 def add_movie():
     query_params = request.args.to_dict()
     print(query_params)
     userID = query_params['userID']
-    movieID = query_params['movieID']
+    tmdbID = query_params['tmdbID']
+    # movieID = query_params['movieID']
 
-    try:
-        insert_into_relUserMovie(userID, movieID, 0)
-        return f'Successfully added {query_params}'
-    except:
-        return f'An error occurred adding a movie for {query_params}'
+    alreadyInDB = select_from_listMovie([tmdbID], 'tmdbID')
+
+    # if movie is already in DB
+    if len(alreadyInDB) > 0:
+        movieTitle = alreadyInDB[0][2]
+        movieID = alreadyInDB[0][0]
+
+        try:
+            insert_into_relUserMovie(userID, movieID, 0)
+
+            flash('Successfully added ' + movieTitle + ' to your Watched List', 'success')
+            url = f'/library/{userID}'
+            return redirect(url)
+        except:
+            flash('An error occurred adding your movie, please try again later', 'danger')
+            return redirect('/')
+    else: 
+        # movie is not already in DB, so add it
+        movieDetails = getMovieDetailsById(tmdbID)
+        print(movieDetails)
+        try:
+            insert_into_listMovie(tmdbID, movieDetails['original_title'], None, None, None)
+            alreadyInDB = select_from_listMovie([tmdbID], 'tmdbID')
+            movieID = alreadyInDB[0][0]
+            insert_into_relUserMovie(userID, movieID, 0)
+
+            flash('Successfully added ' + movieDetails['original_title'] + ' to your Watched List', 'success')
+            url = f'/library/{userID}'
+            return redirect(url)
+        except:
+            flash('An error occurred adding your movie, please try again later', 'danger')
+            return redirect('/')
+        
 
 # Library Search feature
-
 @app.route('/search/<string:query>/')
 def search_tmdb(query):
 

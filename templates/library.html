@@ -45,7 +45,7 @@
 
         <!-- Hidden Movies tab-->
           <div id="hidden" class="tab-pane fade">
-            {% if movies|length < 1%}
+            {% if hidden_movies|length < 1%}
             <h3>Looks like you haven't hidden any movies yet.</h3>
             {% endif %}
             {% block hidden %} {% for hidden_movie in hidden_movies %} 
@@ -70,10 +70,10 @@
             <!-- <h3>Browsing Movies Coming Soon to Theatres Near You</h3> -->
             <form id="search-form" method="post" class="form-inline">
               <span id="helpBlock" class="help-block">Search for new movies to add to your watch list library and spark new recommendations.</span>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <input type="text" class="form-control" id="movieSearchInput" placeholder="Movie title, genre, etc..." aria-describedby="helpBlock">
               </div>
-              <button type="submit" class="btn btn-default">Search</button>
+              <button type="submit" class="btn btn-default">Search</button> -->
             </form>   
             
             <div id="search-results">
@@ -88,10 +88,11 @@
                 <!-- Load some movies from IMDB Discover API by default, to be replaced by user search later -->
                 {% block discover %} {% for movie in discoverMovies %}
                 <div class="search-result-img col-xs-6 col-md-3">
-                  <a href="add-movie/{{movie.id}}" class="thumbnail">
+                  <a href="/add-movie?userID={{user[0]}}&tmdbID={{movie.id}}" class="thumbnail">
                     <img src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="...">
                   </a>
                 </div>
+                
                 {% endfor %} {% endblock %}
 
               </div> <!-- row --> 

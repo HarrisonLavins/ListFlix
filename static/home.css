@@ -29,7 +29,7 @@
 .row {
   /* TODO: Look into strange carousel issue where sliders shift cut-off to right */
   /* This line seems to shift carousel back into place for now */
-  margin-left: -50px;
+  margin-left: -70px;
 }
 
 .slider {

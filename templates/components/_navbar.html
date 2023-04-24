@@ -22,7 +22,7 @@
         <li><a href="/">Users</a></li>
 
         {% if session.userID %}
-        <!-- TODO: Somehow set the path to the currently selected user clicked on in the "Users" page -->
+        <li><a href="/home/{{session.userID}}">Home</a></li>
         <li><a href="/library/{{session.userID}}">Library</a></li>
         {% endif %}
 
