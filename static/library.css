@@ -1,0 +1,14 @@
+.tab-content {
+  padding: 10px 20px;
+}
+
+#search-results {
+  margin-top: 50px;
+}
+
+.search-result-img {
+  transition: all 0.2s ease-in-out;
+}
+.search-result-img:hover {
+  transform: scale(1.1);
+}

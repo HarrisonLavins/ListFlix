@@ -22,6 +22,9 @@
         <!-- Watched Movies tab -->
         <div class="tab-content">
           <div id="watched" class="tab-pane fade in active">
+            {% if movies|length < 1%}
+            <h3>Looks like you haven't watched any movies yet. Head over to the <em>Browse</em> tab to pick some.</h3>
+            {% endif %}
             {% block content %} {% for movie in movies %} 
             
                 <div class="row">
@@ -42,6 +45,9 @@
 
         <!-- Hidden Movies tab-->
           <div id="hidden" class="tab-pane fade">
+            {% if movies|length < 1%}
+            <h3>Looks like you haven't hidden any movies yet.</h3>
+            {% endif %}
             {% block hidden %} {% for hidden_movie in hidden_movies %} 
             
             <div class="row">
@@ -59,6 +65,7 @@
     
           {% endfor %} {% endblock %}
           </div>
+
           <div id="browse" class="tab-pane fade">
             <!-- <h3>Browsing Movies Coming Soon to Theatres Near You</h3> -->
             <form id="search-form" method="post" class="form-inline">
@@ -67,12 +74,34 @@
                 <input type="text" class="form-control" id="movieSearchInput" placeholder="Movie title, genre, etc..." aria-describedby="helpBlock">
               </div>
               <button type="submit" class="btn btn-default">Search</button>
-            </form>         
-           </div>
+            </form>   
+            
+            <div id="search-results">
 
-           <div id="search-results"></div>
+              <div class="row">
+                <!-- <div class="search-result-img col-xs-6 col-md-3">
+                  <a href="#" class="thumbnail">
+                    <img src="http://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" alt="...">
+                  </a>
+                </div>
+                -->
+                <!-- Load some movies from IMDB Discover API by default, to be replaced by user search later -->
+                {% block discover %} {% for movie in discoverMovies %}
+                <div class="search-result-img col-xs-6 col-md-3">
+                  <a href="add-movie/{{movie.id}}" class="thumbnail">
+                    <img src="http://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="...">
+                  </a>
+                </div>
+                {% endfor %} {% endblock %}
+
+              </div> <!-- row --> 
+
+  
+             </div> <!-- search-results --> 
+           </div><!-- Browse Tab --> 
+
      
-        </div> <!-- Tab Pane -->
+        </div> <!-- Tab Content -->
       </div>  <!-- Tab Container -->
 
 

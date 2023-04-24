@@ -115,8 +115,12 @@ def render_library(id):
 
         movie_hidden_list.append(hidden_movie_obj)
 
+
+    # Get some default IMDB Discover movies for Browse tab
+    discoverMovies = getDiscover()
+
     # Pass the home template page a Python dictionary called 'movies'
-    return render_template("library.html", movies=movie_watched_list, hidden_movies=movie_hidden_list, user=user[0])
+    return render_template("library.html", movies=movie_watched_list, hidden_movies=movie_hidden_list, user=user[0], discoverMovies=discoverMovies)
 
 # Register From Class
 class NewUserForm(Form):
@@ -252,6 +256,19 @@ def logout():
 #     else:
 #         # Render the recommend template on a GET request
 #         return render_template('recommend.html')
+
+@app.route('/add-movie')
+def add_movie():
+    query_params = request.args.to_dict()
+    print(query_params)
+    userID = query_params['userID']
+    movieID = query_params['movieID']
+
+    try:
+        insert_into_relUserMovie(userID, movieID, 0)
+        return f'Successfully added {query_params}'
+    except:
+        return f'An error occurred adding a movie for {query_params}'
 
 # Library Search feature
 
