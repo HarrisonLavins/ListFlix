@@ -63,7 +63,12 @@
 
       <!-- ML Movies tab-->
       <div id="ML" class="tab-pane fade">
+        {% if ml_movies|length < 1%}
+          <h1>Nothing here! Head to <a href="/library/{{user[0]}}">Library</a> to add movies</h1>
+      {% endif %}
+
         {% block ml_carousel %} {% for ml_movie_obj in ml_movies %}
+        {% if ml_movie_obj.recommended_movies|length > 0 %}
         <h2 class="carousel-heading">Because you watched {{ml_movie_obj.watched_movie_title}}</h2>
         
         <div class="carousel">
@@ -94,6 +99,7 @@
           </div>
         </div> 
         </div><!-- End Carousel -->
+        {% endif %}
         {% endfor %} {% endblock %}
       </div>
       <!-- Tab Pane-->
