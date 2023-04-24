@@ -151,23 +151,27 @@ def register():
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         
-        profilepic = "https://api.dicebear.com/6.x/adventurer/svg?seed=Sasha"
+        profilepic = request.form['profilepic']
         
-        try: 
-            insert_into_listAccount(email, password)
-            result = select_from_listAccount([email])
-            accountID = result[0]
-            insert_into_listUser(username, profilepic, accountID)
-        
-            flash('You are now registered and can log in', 'success')
+        if "@" in email:
+            try: 
+                insert_into_listAccount(email, password)
+                result = select_from_listAccount([email])
+                accountID = result[0]
+                insert_into_listUser(username, profilepic, accountID)
+            
+                flash('You are now registered and can log in', 'success')
 
-            # Log the user in once registered
-            session['logged_in'] = True
-            session['accountID'] = accountID
+                # Log the user in once registered
+                session['logged_in'] = True
+                session['accountID'] = accountID
 
-            return render_template('users.html')
-        except:
-            flash('That email already exists', 'danger')
+                redirecturl = f'/'
+                return redirect(redirecturl)
+            except:
+                flash('That email already exists', 'danger')
+        else:
+            flash('Not a real email!','danger')
     return render_template('register.html', form=form)
 
 # User login
