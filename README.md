@@ -2,6 +2,9 @@
 
 AI movie recommendations for what to watch next, when you don't know what to watch next.
 
+<img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/user-selection.png?raw=true" width="400">
+
+
 ## Installation
 
 ### Flask
