@@ -16,7 +16,9 @@ When running the installer, choose the 'Developer' option.
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 1.PNG?raw=true" width="400">
 
 Leave most settings on default. When configuring the server, create a user for the application to access the server with. The connection string we created inside the project is for 
+
 user: admin
+
 password: ET_5600
 
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 2.PNG?raw=true" width="400">
