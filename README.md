@@ -4,61 +4,47 @@ AI movie recommendations for what to watch next, when you don't know what to wat
 
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/user-selection.png?raw=true" width="400">
 
-## Code Installation
 
-First, you will want to clone/download the code for this project using either:
+## Installation
 
-1. your favorite `git` graphical user interface (GUI), or
-2. by downloading the code as a `.ZIP` file, or
-3. by using the command line as described below:
+### MySQL Server
 
-_Note: You will need `git` installed in order to perform these steps_
+To run the application, you will need an active installation of MySQL Server on your machine. You can find the installer [here](https://dev.mysql.com/downloads/installer/)
 
-### Windows
+When running the installer, choose the 'Developer' option. 
 
-```
-> mkdir ListFlix
-> cd ListFlix
-> git clone https://github.com/HarrisonLavins/ListFlix.git
-```
+<img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 1.PNG?raw=true" width="400">
 
-### macOSX/Linux
+Leave most settings on default. When configuring the server, create a user for the application to access the server with. The connection string we created inside the project is for 
+user: admin
+password: ET_5600
 
-```
-$ mkdir ListFlix
-$ cd ListFlix
-$ git clone https://github.com/HarrisonLavins/ListFlix.git
-```
+<img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 2.PNG?raw=true" width="400">
 
-## Configuring your Python Environment
+### Flask
 
-Depending on what machine you are on (Windows/macOSX/Linux), you will need to install the necessary Python libraries using one of the following methods:
+Depending on what machine you are on and if you are using Python virtual environments or a package/environment manager like [Anaconda](https://www.anaconda.com/), you will need to install Flask using one of the following methods:
 
-1. Using Python Virtual Environments (the official recommendation by Flask)
+1. Using Python Virtual Environments (recommended by Flask)
 
-[Flask Documentation](https://flask.palletsprojects.com/en/2.2.x/installation/#virtual-environments)
+[Flask Documentation](https://flask.palletsprojects.com/en/2.2.x/installation/)
 
-Use the following to create the virtual environment for the app and install the necessary Python packages:
+2. Using Anaconda:
 
-### Windows
+`conda install -c anaconda flask`
 
-```
-> py -3 -m venv ListFlix
-> ListFlix\Scripts\activate
-> pip install -r requirements.txt
-```
-
-### macOSX/Linux
-
-```
-$ python3 -m venv ListFlix
-$ . ListFlix/bin/activate
-$ pip install -r requirements.txt
-```
-
-## MySQL Connector
+### MySQL Connector
 
 `pip install mysql-connector-python`
+
+### MySQL Server Components Setup
+
+Run the following scripts from the sqlscripts folder in order for a full setup of the MySQL Server:
+
+createDB.py
+
+createTABLES.py
+
 
 ## Running the App
 
