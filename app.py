@@ -9,23 +9,12 @@ from recommendations import get_ml_movies
 
 app = Flask(__name__)
 
-# # Config MySQL
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'admin'
-# app.config['MYSQL_PASSWORD'] = 'ET_5600'
-# app.config['MYSQL_DB'] = 'LISTFLIX'
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-#
-# # initialize MYSQL
-# mysql = MySQL(app)
-
-
-
-
+# Define Index
 @app.route('/')
 def index():
+    # Create a session
     session['userID'] = None
-
+    # Direct users to users page if logged in; if not redirect to login page
     loggedIn = session.get('accountID')
     if loggedIn:
         users = select_from_listUser([session['accountID']])
@@ -34,7 +23,9 @@ def index():
         return redirect(url_for('login'))
     
 
+# Define Homepage
 @app.route('/home/<string:id>/')
+# Function used to populate pages with movies; The machine learning algorithm connects here
 def fetch_movies(id):
     session['userID'] = id
 
@@ -68,16 +59,16 @@ def fetch_movies(id):
         ml_recommendations = []
         ml_recommended_movies = get_ml_movies(tmdbID)
         for movie in ml_recommended_movies:
-            print(movie)
-            print('TRYING TO PRINT MOVIE ID')
-            print(movie['Movie_Id'])
+            # print(movie)
+            # print('TRYING TO PRINT MOVIE ID')
+            # print(movie['Movie_Id'])
             movie_details = getMovieDetailsById(str(movie["Movie_Id"]))
             movie_obj = {'original_title': movie_details['original_title'], 'poster_path': movie_details['poster_path'], 'overview': movie_details['overview']}
             ml_recommendations.append(movie_obj)
         
         ml_movie_list.append({'watched_movie_title': watched_movie_title, 'recommended_movies': ml_recommendations})
 
-    print('ml_movie_list --------------------------')
+    #print('ml_movie_list --------------------------')
     # print(ml_movie_list[0])
 
 
@@ -127,9 +118,11 @@ def render_library(id):
     # Pass the home template page a Python dictionary called 'movies'
     return render_template("library.html", movies=movie_watched_list, hidden_movies=movie_hidden_list, user=user[0], discoverMovies=discoverMovies)
 
-# Register From Class
+# Add user page form
 class NewUserForm(Form):
     username = StringField('Username', [validators.Length(min=2, max=25)])
+
+# Add user page
 @app.route('/adduser', methods=['GET', 'POST'])
 def addUser():
     form = NewUserForm(request.form)
@@ -149,7 +142,7 @@ def addUser():
             flash('Something went wrong', 'danger')
     return render_template('adduser.html', form=form)
     
-# Register From Class
+# Register page form
 class RegisterForm(Form):
     username = StringField('Username', [validators.Length(min=2, max=25)])
     email = StringField('Email', [validators.Length(min=6, max=50)])
@@ -158,6 +151,7 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
     confirm = PasswordField('Confirm Password')
+
 # User Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -199,7 +193,6 @@ def login():
         password_candidate = request.form['password']
     
         result = select_from_listAccount([email])
-        # print(result)
         
         if not result:
             error = 'Email not found'
@@ -225,6 +218,7 @@ def login():
 
 # Check if user logged in
 def is_logged_in(f):
+    # Flask decorator used to prevent users from seeing parts of the web app if they aren't logged in
     @wraps(f)
     def wrap(*args, **kwargs):
         if 'logged_in' in session:
