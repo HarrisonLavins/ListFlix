@@ -66,20 +66,20 @@ When running the installer, choose the 'Developer' option.
 
 Leave most settings on default. When configuring the server, create a user for the application to access the server with. The connection string we created inside the project is for 
 
-user: admin
+user: `admin`
 
-password: ET_5600
+password: `ET_5600`
 
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 2.PNG?raw=true" width="400">
 
 
 ### MySQL Server Components Setup
 
-Run the following scripts from the sqlscripts folder in order for a full setup of the MySQL Server:
+Run the following scripts from the `sqlscripts` folder in order for a full setup of the MySQL Server:
 
-createDB.py
+`createDB.py`
 
-createTABLES.py
+`createTABLES.py`
 
 
 ## Running the App
