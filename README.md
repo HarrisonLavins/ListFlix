@@ -5,8 +5,57 @@ AI movie recommendations for what to watch next, when you don't know what to wat
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/user-selection.png?raw=true" width="400">
 
 
-## Installation
+## Installation/Cloning the Project 
 
+First, you will want to clone/download the code for this project using either:
+
+1. your favorite `git` graphical user interface (GUI), or
+2. by downloading the code as a `.ZIP` file, or
+3. by using the command line as described below:
+
+_Note: You will need `git` installed in order to perform these steps_
+
+### Windows
+
+```
+> mkdir ListFlix
+> cd ListFlix
+> git clone https://github.com/HarrisonLavins/ListFlix.git
+```
+
+### macOSX/Linux
+
+```
+$ mkdir ListFlix
+$ cd ListFlix
+$ git clone https://github.com/HarrisonLavins/ListFlix.git
+```
+
+## Configuring your Python Environment
+
+Depending on what machine you are on (Windows/macOSX/Linux), you will need to install the necessary Python libraries using one of the following methods:
+
+1. Using Python Virtual Environments (the official recommendation by Flask)
+
+[Flask Documentation](https://flask.palletsprojects.com/en/2.2.x/installation/#virtual-environments)
+
+Use the following to create the virtual environment for the app and install the necessary Python packages:
+
+### Windows
+
+```
+> py -3 -m venv ListFlix
+> ListFlix\Scripts\activate
+> pip install -r requirements.txt
+```
+
+### macOSX/Linux
+
+```
+$ python3 -m venv ListFlix
+$ . ListFlix/bin/activate
+$ pip install -r requirements.txt
+```
 ### MySQL Server
 
 To run the application, you will need an active installation of MySQL Server on your machine. You can find the installer [here](https://dev.mysql.com/downloads/installer/)
@@ -23,21 +72,6 @@ password: ET_5600
 
 <img src="https://github.com/HarrisonLavins/ListFlix/blob/main/screenshots/MySQL Installer 2.PNG?raw=true" width="400">
 
-### Flask
-
-Depending on what machine you are on and if you are using Python virtual environments or a package/environment manager like [Anaconda](https://www.anaconda.com/), you will need to install Flask using one of the following methods:
-
-1. Using Python Virtual Environments (recommended by Flask)
-
-[Flask Documentation](https://flask.palletsprojects.com/en/2.2.x/installation/)
-
-2. Using Anaconda:
-
-`conda install -c anaconda flask`
-
-### MySQL Connector
-
-`pip install mysql-connector-python`
 
 ### MySQL Server Components Setup
 
